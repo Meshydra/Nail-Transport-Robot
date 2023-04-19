@@ -31,7 +31,7 @@ int centerIRValue;
 int rightIRValue;
 
 //Controls the Speed of the robot
-int speed = 150;
+int speed = 90;
 
 void setup()
 {
@@ -69,22 +69,6 @@ void loop(){
   digitalWrite(LEFT_LED_PIN, HIGH);    
   digitalWrite(RIGHT_LED_PIN, HIGH);
 
-  // Measure the distance using the ultrasonic sensor
-  long duration, distance;
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
-  duration = pulseIn(ECHO_PIN, HIGH);
-  distance = duration * 0.034 / 2;
-
-  // If an obstacle is detected within a certain range, stop the robot and back up
-  if (distance < 15)
-  {    
-    stop();
-  }
-
 // Check the values of the IR sensors and perform the appropriate action
 if (leftIRValue == 0 && centerIRValue == 1 && rightIRValue == 0)
   {
@@ -92,17 +76,15 @@ if (leftIRValue == 0 && centerIRValue == 1 && rightIRValue == 0)
   }
   else if (leftIRValue == 0 && centerIRValue == 0 && rightIRValue == 0)
   {    
-    uTurn();
+    uTurn();y
   }
   else if (leftIRValue == 1 && centerIRValue == 1 && rightIRValue == 0)
   {
-    blink(LEFT_LED_PIN);
-    turnLeft();
+      turnLeft();
   }
   else if (leftIRValue == 0 && centerIRValue == 1 && rightIRValue == 1)
   {
-    blink(RIGHT_LED_PIN);
-    turnRight();
+      turnRight();
   }
   else if (leftIRValue == 1 && centerIRValue == 0 && rightIRValue == 0)
   {
@@ -116,19 +98,18 @@ if (leftIRValue == 0 && centerIRValue == 1 && rightIRValue == 0)
   }
   else if (leftIRValue == 1 && centerIRValue == 1 && rightIRValue == 1)
   {
-    forward();
+    turnRight();
   }
-  else{
-    blink(LEFT_LED_PIN);
-    turnLeft();
+  else if (leftIRValue == 1 && centerIRValue == 0 && rightIRValue == 1)
+  {
+    stop();
   }
 }
-
-
 
 // Function to move the robot forward
 void forward()
 {
+  
   analogWrite(MOTOR1_ENABLE_PIN , speed);
   analogWrite(MOTOR2_ENABLE_PIN, speed);
   digitalWrite(MOTOR1_INPUT_PIN_1, HIGH);
@@ -140,6 +121,7 @@ void forward()
 // Function to turn the robot left
 void turnLeft()
 {
+  
   analogWrite(MOTOR1_ENABLE_PIN , speed);
   analogWrite(MOTOR2_ENABLE_PIN, speed);
   digitalWrite(MOTOR1_INPUT_PIN_1, LOW);
@@ -158,9 +140,11 @@ void turnRight()
   digitalWrite(MOTOR2_INPUT_PIN_2, HIGH);
 }
 
+
 // Stop the robot
 void stop()
 {
+  
   digitalWrite(MOTOR1_INPUT_PIN_1, LOW);
   digitalWrite(MOTOR1_INPUT_PIN_2, LOW);
   digitalWrite(MOTOR2_INPUT_PIN_1, LOW);
@@ -171,7 +155,7 @@ void stop()
 
 void uTurn()
 {
-  turnLeft(); // Make a left turn
+  turnRight(); // Make a left turn
 }
 
 void blink(int pin){
